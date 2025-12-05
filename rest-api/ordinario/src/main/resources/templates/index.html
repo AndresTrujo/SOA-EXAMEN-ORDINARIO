@@ -1,241 +1,192 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Mini Frontend</title>
+    <title>Mini Frontend Unificado</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        body { margin: 20px; }
-        section { padding: 20px; border-radius: 10px; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .result { white-space: pre-wrap; background: #f8f9fa; padding: 12px; border-radius: 8px; margin-top: 10px; }
+        body {
+            background: #f8f9fa;
+            padding: 25px;
+        }
+        .card {
+            margin-bottom: 25px;
+            border-radius: 12px;
+        }
+        .result {
+            background: #eef0f2;
+            padding: 12px;
+            white-space: pre-wrap;
+            border-radius: 8px;
+        }
     </style>
 </head>
+
 <body>
 
 <div class="container">
-<h1 class="mb-4">Frontend — Alumnos / Cursos / Calificaciones</h1>
 
-<!-- ============================================================
-                           ALUMNOS
-=============================================================== -->
-<section>
-    <h2>Alumnos (SOAP - Proxy REST)</h2>
+    <h1 class="text-center mb-4 fw-bold">Frontend Unificado — Alumnos / Cursos / Calificaciones</h1>
 
-    <h4>Registrar Alumno</h4>
-    <div class="row g-2">
-        <div class="col"><input id="matricula" class="form-control" placeholder="Matricula"></div>
-        <div class="col"><input id="curp" class="form-control" placeholder="CURP"></div>
-        <div class="col"><input id="nombre" class="form-control" placeholder="Nombre"></div>
-        <div class="col"><input id="apellido" class="form-control" placeholder="Apellido"></div>
-        <div class="col"><input id="email" type="email" class="form-control" placeholder="Email"></div>
-    </div>
-    <button class="btn btn-primary mt-2" onclick="registrarAlumno()">Guardar</button>
+    <!-- ========================================================= -->
+    <!-- ======================= ALUMNOS ========================= -->
+    <!-- ========================================================= -->
 
-    <h4 class="mt-4">Consultar Alumno</h4>
-    <input id="buscarMatricula" class="form-control w-25" placeholder="Matricula">
-    <button class="btn btn-secondary mt-2" onclick="consultarAlumno()">Buscar</button>
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="mb-3 text-primary">Alumnos (SOAP vía Proxy REST)</h2>
 
-    <h4 class="mt-4">Editar Alumno</h4>
-    <div class="row g-2">
-        <div class="col"><input id="editMatricula" class="form-control" placeholder="Matricula"></div>
-        <div class="col"><input id="editNombre" class="form-control" placeholder="Nuevo Nombre"></div>
-        <div class="col"><input id="editApellido" class="form-control" placeholder="Nuevo Apellido"></div>
-        <div class="col"><input id="editEmail" class="form-control" placeholder="Nuevo Email"></div>
-        <div class="col">
-            <select id="editEstatus" class="form-select">
-                <option value="ACTIVO">Activo</option>
-                <option value="BAJA_TEMPORAL">Baja Temporal</option>
-                <option value="EGRESADO">Egresado</option>
-                <option value="SUSPENDIDO">Suspendido</option>
-            </select>
-        </div>
-    </div>
-    <button class="btn btn-warning mt-2" onclick="editarAlumno()">Editar</button>
+            <!-- Registrar Alumno -->
+            <h4 class="mt-4">Registrar Alumno</h4>
+            <div class="row g-2">
+                <div class="col-md-2"><input id="matricula" class="form-control" placeholder="Matrícula" required></div>
+                <div class="col-md-3"><input id="curp" class="form-control" placeholder="CURP (18 caracteres)" maxlength="18"></div>
+                <div class="col-md-2"><input id="nombre" class="form-control" placeholder="Nombre"></div>
+                <div class="col-md-2"><input id="apellido" class="form-control" placeholder="Apellido"></div>
+                <div class="col-md-3"><input id="email" type="email" class="form-control" placeholder="Email"></div>
+            </div>
+            <button class="btn btn-primary mt-2" onclick="registrarAlumno()">Guardar</button>
 
-    <h4 class="mt-4">Eliminar Alumno</h4>
-    <input id="deleteMatricula" class="form-control w-25" placeholder="Matricula">
-    <button class="btn btn-danger mt-2" onclick="eliminarAlumno()">Eliminar</button>
+            <!-- Consultar -->
+            <h4 class="mt-4">Consultar Alumno</h4>
+            <div class="input-group">
+                <input id="buscarMatricula" class="form-control" placeholder="Matrícula">
+                <button class="btn btn-secondary" onclick="consultarAlumno()">Buscar</button>
+            </div>
 
-    <div id="alumnosResult" class="result"></div>
-</section>
+            <!-- Editar -->
+            <h4 class="mt-4">Editar Alumno</h4>
+            <div class="row g-2">
+                <div class="col-md-2"><input id="editMatricula" class="form-control" placeholder="Matrícula"></div>
+                <div class="col-md-3"><input id="editNombre" class="form-control" placeholder="Nuevo nombre"></div>
+                <div class="col-md-3"><input id="editApellido" class="form-control" placeholder="Nuevo apellido"></div>
+                <div class="col-md-3"><input id="editEmail" type="email" class="form-control" placeholder="Nuevo email"></div>
+                <div class="col-md-1">
+                    <select id="editEstatus" class="form-select">
+                        <option value="ACTIVO">Activo</option>
+                        <option value="BAJA_TEMPORAL">Baja Temporal</option>
+                        <option value="EGRESADO">Egresado</option>
+                        <option value="SUSPENDIDO">Suspendido</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-warning mt-2" onclick="editarAlumno()">Editar</button>
 
-<!-- ============================================================
-                           CURSOS
-=============================================================== -->
-<section>
-    <h2>Cursos (API REST)</h2>
+            <!-- Eliminar -->
+            <h4 class="mt-4">Eliminar Alumno</h4>
+            <div class="input-group">
+                <input id="deleteMatricula" class="form-control" placeholder="Matrícula">
+                <button class="btn btn-danger" onclick="eliminarAlumno()">Eliminar</button>
+            </div>
 
-    <h4>Registrar Curso</h4>
-
-    <div class="row g-2">
-        <div class="col-md-4"><input id="cursoNombre" class="form-control" placeholder="Nombre del curso"></div>
-        <div class="col-md-4"><input id="cursoProfesor" class="form-control" placeholder="Profesor"></div>
-        <div class="col-md-4"><input id="cursoDescripcion" class="form-control" placeholder="Descripción"></div>
-
-        <div class="col-md-4">
-            <label class="form-label mt-2">Fecha inicio:</label>
-            <input id="cursoInicio" type="datetime-local" class="form-control">
-        </div>
-
-        <div class="col-md-4">
-            <label class="form-label mt-2">Fecha fin:</label>
-            <input id="cursoFin" type="datetime-local" class="form-control">
-        </div>
-
-        <div class="col-md-4">
-            <label class="form-label mt-2">Horario (ej: 08:00-10:00):</label>
-            <input id="cursoHorario" type="text" class="form-control" placeholder="HH:MM - HH:MM">
-        </div>
-
-        <div class="col-md-4">
-            <label class="form-label mt-2">Créditos:</label>
-            <input id="cursoCreditos" type="number" class="form-control" min="1" placeholder="Créditos">
-        </div>
-
-        <div class="col-md-4">
-            <label class="form-label mt-2">Cupo máximo:</label>
-            <input id="cursoCupo" type="number" class="form-control" min="1" placeholder="Cupo máximo">
+            <div id="alumnosResult" class="result mt-3"></div>
         </div>
     </div>
 
-    <button class="btn btn-primary mt-3" onclick="registrarCurso()">Registrar</button>
 
-    <h4 class="mt-4">Eliminar por ID</h4>
-    <input id="delCursoId" class="form-control w-25" placeholder="ID del curso">
-    <button class="btn btn-danger mt-2" onclick="eliminarCursoId()">Eliminar</button>
 
-    <h4 class="mt-4">Eliminar por Nombre</h4>
-    <input id="delCursoNombre" class="form-control w-50" placeholder="Nombre del curso">
-    <button class="btn btn-danger mt-2" onclick="eliminarCursoNombre()">Eliminar</button>
+    <!-- ========================================================= -->
+    <!-- ======================= CURSOS ========================== -->
+    <!-- ========================================================= -->
 
-    <h4 class="mt-4">Eliminar por Fecha de Inicio</h4>
-    <input id="delCursoFecha" type="datetime-local" class="form-control w-50">
-    <button class="btn btn-danger mt-2" onclick="eliminarCursoFecha()">Eliminar</button>
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="mb-3 text-success">Cursos (API REST)</h2>
 
-    <div id="cursosResult" class="result"></div>
-</section>
+            <!-- Registrar Curso -->
+            <h4 class="mt-4">Registrar Curso</h4>
+            <div class="row g-2">
+                <div class="col-md-3"><input id="cursoNombre" class="form-control" placeholder="Nombre"></div>
+                <div class="col-md-3"><input id="cursoDescripcion" class="form-control" placeholder="Descripción"></div>
+                <div class="col-md-3"><input id="cursoProfesor" class="form-control" placeholder="Profesor"></div>
+                <div class="col-md-3"><input id="cursoHorario" class="form-control" placeholder="Horario (HH:MM-HH:MM)"></div>
 
-<!-- ============================================================
-                       CALIFICACIONES
-=============================================================== -->
-<!-- ---------------------- CALIFICACIONES ----------------------------- -->
-<section>
-    <h2>Calificaciones (API REST)</h2>
+                <div class="col-md-4">
+                    <label>Fecha Inicio</label>
+                    <input id="cursoInicio" type="datetime-local" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label>Fecha Fin</label>
+                    <input id="cursoFin" type="datetime-local" class="form-control">
+                </div>
 
-    <h3>Registrar Calificación</h3>
+                <div class="col-md-2"><input id="cursoCreditos" type="number" min="1" class="form-control" placeholder="Créditos"></div>
+                <div class="col-md-2"><input id="cursoCupo" type="number" min="1" class="form-control" placeholder="Cupo Máx"></div>
+            </div>
 
-    <input id="calMatricula" class="form-control" maxlength="20"
-           placeholder="Matrícula alumno" required>
+            <button class="btn btn-success mt-2" onclick="registrarCurso()">Guardar</button>
 
-    <input id="calMateria" class="form-control"
-           placeholder="Materia" required>
+            <!-- Eliminar -->
+            <h4 class="mt-4">Eliminar por ID</h4>
+            <div class="input-group mb-2">
+                <input id="delCursoId" class="form-control" placeholder="ID del curso">
+                <button class="btn btn-danger" onclick="eliminarCursoId()">Eliminar</button>
+            </div>
 
-    <input id="calValor" type="number" class="form-control"
-           placeholder="Calificación (0 a 100)"
-           min="0" max="100" step="0.01" required>
+            <h4>Eliminar por Nombre</h4>
+            <div class="input-group mb-2">
+                <input id="delCursoNombre" class="form-control" placeholder="Nombre del curso">
+                <button class="btn btn-danger" onclick="eliminarCursoNombre()">Eliminar</button>
+            </div>
 
-    <button class="btn btn-primary mt-2" onclick="registrarCalificacion()">
-        Registrar
-    </button>
+            <h4>Eliminar por Fecha de Inicio</h4>
+            <div class="input-group mb-2">
+                <input id="delCursoFecha" type="datetime-local" class="form-control">
+                <button class="btn btn-danger" onclick="eliminarCursoFecha()">Eliminar</button>
+            </div>
 
-    <h3 class="mt-3">Ver todas</h3>
-    <button class="btn btn-secondary" onclick="verCalificaciones()">Listar</button>
+            <div id="cursosResult" class="result mt-3"></div>
+        </div>
+    </div>
 
-    <h3 class="mt-3">Ver por Alumno</h3>
-    <input id="calBuscarMatricula" class="form-control"
-           placeholder="Matrícula alumno">
-    <button class="btn btn-info mt-2" onclick="verCalificacionesAlumno()">Buscar</button>
 
-    <div id="calificacionesResult" class="result"></div>
-</section>
+
+    <!-- ========================================================= -->
+    <!-- ==================== CALIFICACIONES ===================== -->
+    <!-- ========================================================= -->
+
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="mb-3 text-danger">Calificaciones (API REST)</h2>
+
+            <h4>Registrar Calificación</h4>
+            <div class="row g-2">
+                <div class="col-md-3"><input id="calMatricula" class="form-control" placeholder="Matrícula"></div>
+                <div class="col-md-3"><input id="calMateria" class="form-control" placeholder="Materia"></div>
+                <div class="col-md-3"><input id="calValor" type="number" class="form-control" placeholder="Calificación (0–100)" min="0" max="100"></div>
+            </div>
+            <button class="btn btn-danger mt-2" onclick="registrarCalificacion()">Registrar</button>
+
+            <h4 class="mt-4">Ver todas</h4>
+            <button class="btn btn-secondary" onclick="verCalificaciones()">Listar</button>
+
+            <h4 class="mt-4">Ver por Alumno</h4>
+            <div class="input-group">
+                <input id="calBuscarMatricula" class="form-control" placeholder="Matrícula del alumno">
+                <button class="btn btn-secondary" onclick="verCalificacionesAlumno()">Buscar</button>
+            </div>
+
+            <div id="calificacionesResult" class="result mt-3"></div>
+        </div>
+    </div>
+
 </div>
 
 
+
+
+
+<!-- ========================================================= -->
+<!-- ====================== JAVASCRIPT ======================== -->
+<!-- ========================================================= -->
+
 <script>
-
-    /* ------------------------- CURSOS ------------------------- */
-async function registrarCurso() {
-
-    const data = {
-        nombre: cursoNombre.value.trim(),
-        descripcion: cursoDescripcion.value.trim(),
-        profesor: cursoProfesor.value.trim(),
-        fechaInicio: cursoInicio.value,
-        fechaFin: cursoFin.value,
-        horario: cursoHorario.value.trim(),
-        creditos: Number(cursoCreditos.value),
-        cupoMaximo: Number(cursoCupo.value)
-    };
-
-    // ----- VALIDACIONES -----
-
-    if (!data.nombre)
-        return cursosResult.textContent = "El nombre del curso es obligatorio.";
-
-    if (!data.descripcion)
-        return cursosResult.textContent = "La descripción es obligatoria.";
-
-    if (!data.profesor)
-        return cursosResult.textContent = "El nombre del profesor es obligatorio.";
-
-    if (!data.fechaInicio)
-        return cursosResult.textContent = "Debes seleccionar fecha de inicio.";
-
-    if (!data.fechaFin)
-        return cursosResult.textContent = "Debes seleccionar fecha de fin.";
-
-    const inicio = new Date(data.fechaInicio);
-    const fin = new Date(data.fechaFin);
-
-    if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) {
-        return cursosResult.textContent = "Las fechas no tienen formato válido.";
-    }
-
-    if (fin <= inicio) {
-        return cursosResult.textContent = "La fecha de fin debe ser después de la fecha de inicio.";
-    }
-
-    if (!data.horario)
-        return cursosResult.textContent = "El horario es obligatorio.";
-
-    // Formato de horario ejemplo: "09:00-12:00"
-    if (!/^\d{2}:\d{2}\-\d{2}:\d{2}$/.test(data.horario)) {
-        return cursosResult.textContent =
-            "El horario debe ser en formato HH:MM-HH:MM";
-    }
-
-    if (isNaN(data.creditos) || data.creditos < 1) {
-        return cursosResult.textContent = "Los créditos deben ser un número mayor o igual a 1.";
-    }
-
-    if (isNaN(data.cupoMaximo) || data.cupoMaximo < 1) {
-        return cursosResult.textContent = "El cupo máximo debe ser un número mayor o igual a 1.";
-    }
-
-    // ----- SI TODO ES CORRECTO -----
-    send("/api/cursos", "POST", data, cursosResult);
-}
-
-async function eliminarCursoId() {
-    const id = delCursoId.value.trim();
-    if (!id) return cursosResult.textContent = "Ingresa un ID de curso.";
-    send(`/api/cursos/${id}`, "DELETE", null, cursosResult);
-}
-
-async function eliminarCursoNombre() {
-    const nombre = delCursoNombre.value.trim();
-    if (!nombre) return cursosResult.textContent = "Ingresa un nombre de curso.";
-    send(`/api/cursos/nombre/${nombre}`, "DELETE", null, cursosResult);
-}
-
-async function eliminarCursoFecha() {
-    const fecha = delCursoFecha.value;
-    if (!fecha) return cursosResult.textContent = "Selecciona una fecha válida.";
-    send(`/api/cursos/fecha-inicio/${fecha}`, "DELETE", null, cursosResult);
-}
+// =============================================================
+// ===================== VALIDACIONES ==========================
+// =============================================================
 
 /* ------------------------- ALUMNOS ------------------------- */
 async function registrarAlumno() {
@@ -247,39 +198,27 @@ async function registrarAlumno() {
         email: email.value.trim()
     };
 
-    // ----- VALIDACIONES -----
-    if (!data.matricula) {
-        return alumnosResult.textContent = "La matrícula es obligatoria.";
-    }
+    if (!data.matricula) return alumnosResult.textContent = "❌ Matrícula requerida.";
+    if (data.curp.length !== 18) return alumnosResult.textContent = "❌ CURP debe tener 18 caracteres.";
+    if (!data.nombre) return alumnosResult.textContent = "❌ Nombre requerido.";
+    if (!data.apellido) return alumnosResult.textContent = "❌ Apellido requerido.";
 
-    if (!data.curp || data.curp.length !== 18) {
-        return alumnosResult.textContent = "La CURP debe tener exactamente 18 caracteres.";
-    }
-
-    if (!data.nombre) {
-        return alumnosResult.textContent = "El nombre es obligatorio.";
-    }
-
-    if (!data.apellido) {
-        return alumnosResult.textContent = "El apellido es obligatorio.";
-    }
-
-    // val email simple
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
-        return alumnosResult.textContent = "El email no es válido.";
-    }
+    if (!emailRegex.test(data.email)) return alumnosResult.textContent = "❌ Email inválido.";
 
     send("/api/alumnos", "POST", data, alumnosResult);
 }
 
 async function consultarAlumno() {
     const m = buscarMatricula.value.trim();
-    if (!m) return alumnosResult.textContent = "Debes ingresar una matrícula.";
+    if (!m) return alumnosResult.textContent = "❌ Ingresa matrícula.";
     send(`/api/alumnos/${m}`, "GET", null, alumnosResult);
 }
 
 async function editarAlumno() {
+    const m = editMatricula.value.trim();
+    if (!m) return alumnosResult.textContent = "❌ Ingresa matrícula.";
+
     const data = {
         nombre: editNombre.value.trim(),
         apellido: editApellido.value.trim(),
@@ -287,67 +226,106 @@ async function editarAlumno() {
         estatus: editEstatus.value
     };
 
-    const m = editMatricula.value.trim();
-    if (!m) return alumnosResult.textContent = "Debes ingresar matrícula a editar.";
-
-    if (!data.nombre) return alumnosResult.textContent = "El nombre es obligatorio.";
-    if (!data.apellido) return alumnosResult.textContent = "El apellido es obligatorio.";
+    if (!data.nombre) return alumnosResult.textContent = "❌ Nombre requerido.";
+    if (!data.apellido) return alumnosResult.textContent = "❌ Apellido requerido.";
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
-        return alumnosResult.textContent = "Email inválido.";
-    }
+    if (!emailRegex.test(data.email)) return alumnosResult.textContent = "❌ Email inválido.";
 
     send(`/api/alumnos/${m}`, "PUT", data, alumnosResult);
 }
 
 async function eliminarAlumno() {
     const m = deleteMatricula.value.trim();
-    if (!m) return alumnosResult.textContent = "Ingresa la matrícula a eliminar.";
+    if (!m) return alumnosResult.textContent = "❌ Ingresa matrícula.";
     send(`/api/alumnos/${m}`, "DELETE", null, alumnosResult);
 }
 
-/* --------------------- CALIFICACIONES --------------------- */
-async function registrarCalificacion() {
-    const matricula = calMatricula.value.trim();
-    const materia = calMateria.value.trim();
-    const valor = calValor.value.trim();
 
-    // --- VALIDACIONES ---
-    if (!matricula || matricula.length > 20) {
-        return calificacionesResult.textContent =
-            "Matrícula inválida (máx. 20 caracteres)";
-    }
 
-    if (!materia) {
-        return calificacionesResult.textContent =
-            "La materia es obligatoria.";
-    }
-
-    const num = Number(valor);
-    if (isNaN(num) || num < 0 || num > 100) {
-        return calificacionesResult.textContent =
-            "La calificación debe ser un número entre 0 y 100.";
-    }
+/* ------------------------- CURSOS ------------------------- */
+async function registrarCurso() {
     const data = {
-        matriculaAlumno: matricula,
-        materia: materia,
-        calificacion: num
+        nombre: cursoNombre.value.trim(),
+        descripcion: cursoDescripcion.value.trim(),
+        profesor: cursoProfesor.value.trim(),
+        fechaInicio: cursoInicio.value,
+        fechaFin: cursoFin.value,
+        horario: cursoHorario.value.trim(),
+        creditos: Number(cursoCreditos.value),
+        cupoMaximo: Number(cursoCupo.value)
     };
+
+    if (!data.nombre) return cursosResult.textContent = "❌ Nombre requerido.";
+    if (!data.descripcion) return cursosResult.textContent = "❌ Descripción requerida.";
+    if (!data.profesor) return cursosResult.textContent = "❌ Profesor requerido.";
+    if (!data.fechaInicio) return cursosResult.textContent = "❌ Fecha inicio requerida.";
+    if (!data.fechaFin) return cursosResult.textContent = "❌ Fecha fin requerida.";
+
+    const inicio = new Date(data.fechaInicio);
+    const fin = new Date(data.fechaFin);
+    if (fin <= inicio) return cursosResult.textContent = "❌ Fecha fin debe ser después de inicio.";
+
+    if (!/^\d{2}:\d{2}\-\d{2}:\d{2}$/.test(data.horario))
+        return cursosResult.textContent = "❌ Horario inválido (HH:MM-HH:MM).";
+
+    if (data.creditos < 1) return cursosResult.textContent = "❌ Créditos deben ser ≥ 1.";
+    if (data.cupoMaximo < 1) return cursosResult.textContent = "❌ Cupo máximo debe ser ≥ 1.";
+
+    send("/api/cursos", "POST", data, cursosResult);
+}
+
+async function eliminarCursoId() {
+    const id = delCursoId.value.trim();
+    if (!id) return cursosResult.textContent = "❌ Ingresa ID.";
+    send(`/api/cursos/${id}`, "DELETE", null, cursosResult);
+}
+
+async function eliminarCursoNombre() {
+    const nombre = delCursoNombre.value.trim();
+    if (!nombre) return cursosResult.textContent = "❌ Ingresa nombre.";
+    send(`/api/cursos/nombre/${nombre}`, "DELETE", null, cursosResult);
+}
+
+async function eliminarCursoFecha() {
+    const fecha = delCursoFecha.value;
+    if (!fecha) return cursosResult.textContent = "❌ Selecciona fecha.";
+    send(`/api/cursos/fecha-inicio/${fecha}`, "DELETE", null, cursosResult);
+}
+
+
+
+/* -------------------- CALIFICACIONES ----------------------- */
+async function registrarCalificacion() {
+    const data = {
+        matriculaAlumno: calMatricula.value.trim(),
+        materia: calMateria.value.trim(),
+        calificacion: Number(calValor.value)
+    };
+
+    if (!data.matriculaAlumno) return calificacionesResult.textContent = "❌ Matrícula requerida.";
+    if (!data.materia) return calificacionesResult.textContent = "❌ Materia requerida.";
+    if (isNaN(data.calificacion) || data.calificacion < 0 || data.calificacion > 100)
+        return calificacionesResult.textContent = "❌ Calificación debe ser 0–100.";
 
     send("/api/calificaciones", "POST", data, calificacionesResult);
 }
-
 
 async function verCalificaciones() {
     send("/api/calificaciones", "GET", null, calificacionesResult);
 }
 
 async function verCalificacionesAlumno() {
-    send(`/api/calificaciones/alumno/${calBuscarMatricula.value}`, "GET", null, calificacionesResult);
+    const m = calBuscarMatricula.value.trim();
+    if (!m) return calificacionesResult.textContent = "❌ Ingresa matrícula.";
+    send(`/api/calificaciones/alumno/${m}`, "GET", null, calificacionesResult);
 }
 
-/* -------------------- FUNCION AJAX GENERAL --------------------- */
+
+
+// =============================================================
+// =============== MÉTODO GENERAL PARA AJAX ====================
+// =============================================================
 async function send(url, method, body, output) {
     try {
         const res = await fetch(url, {
@@ -355,9 +333,11 @@ async function send(url, method, body, output) {
             headers: { "Content-Type": "application/json" },
             body: body ? JSON.stringify(body) : null
         });
-        output.textContent = await res.text();
+
+        const text = await res.text();
+        output.textContent = text;
     } catch (e) {
-        output.textContent = "Error: " + e;
+        output.textContent = "❌ Error: " + e;
     }
 }
 </script>
